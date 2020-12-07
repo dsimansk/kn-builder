@@ -1,0 +1,3 @@
+build:
+	 go build -o kn-builder ./cmd/...
+.PHONY: build
