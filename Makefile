@@ -1,3 +1,4 @@
 build:
-	 go build -o kn-builder ./cmd/...
+	gofmt -s -w knb.go pkg
+	go build -o knb
 .PHONY: build

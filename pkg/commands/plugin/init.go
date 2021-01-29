@@ -1,54 +1,54 @@
 package plugin
 
 import (
-    "fmt"
-    "os"
-    "path/filepath"
-    "text/template"
+	"fmt"
+	"os"
+	"path/filepath"
+	"text/template"
 
-    "github.com/spf13/cobra"
+	"github.com/spf13/cobra"
 )
 
 func NewPluginInitCmd() *cobra.Command {
-    plugin := &Plugin{}
-    var outputDir string
+	plugin := &Plugin{}
+	var outputDir string
 
-    var registerCmd = &cobra.Command{
-        Use:   "init",
-        Short: "Generate required resource to inline plugin.",
-        RunE: func(cmd *cobra.Command, args []string) error {
-            err := os.MkdirAll(outputDir, os.ModePerm)
-            if err != nil {
-                return err
-            }
-            outputFile := filepath.Join(outputDir, "plugin.go")
-            if _, err := os.Stat(outputFile); err == nil {
-                return fmt.Errorf("File '%s' already exists\n", outputFile)
-            }
-            f, err := os.Create(outputFile)
-            if err != nil {
-                return err
-            }
-            t, err := template.New("init").Parse(pluginTemplate)
-            if err != nil {
-                return err
-            }
-            err = t.Execute(f, plugin)
-            if err != nil {
-                return err
-            }
-            err = f.Close()
-            return err
-        },
-    }
-    registerCmd.Flags().StringVar(&plugin.Name, "name", "", "Name of a plugin.")
-    registerCmd.Flags().StringVar(&plugin.Description, "description", "", "Description of a plugin.")
-    registerCmd.Flags().StringVar(&plugin.ImportPath, "import", "", "Import path of plugin.")
-    registerCmd.Flags().StringVar(&outputDir, "output-dir", "plugin", "Output directory to write plugin.go file.")
-    registerCmd.Flags().StringSliceVar(&plugin.CmdParts, "cmd", []string{},"Defines command parts to execute plugin from kn. " +
-        "E.g `kn service log` can be achieved with `--cmd service,log`." )
+	var registerCmd = &cobra.Command{
+		Use:   "init",
+		Short: "Generate required resource to inline plugin.",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			err := os.MkdirAll(outputDir, os.ModePerm)
+			if err != nil {
+				return err
+			}
+			outputFile := filepath.Join(outputDir, "plugin.go")
+			if _, err := os.Stat(outputFile); err == nil {
+				return fmt.Errorf("File '%s' already exists\n", outputFile)
+			}
+			f, err := os.Create(outputFile)
+			if err != nil {
+				return err
+			}
+			t, err := template.New("init").Parse(pluginTemplate)
+			if err != nil {
+				return err
+			}
+			err = t.Execute(f, plugin)
+			if err != nil {
+				return err
+			}
+			err = f.Close()
+			return err
+		},
+	}
+	registerCmd.Flags().StringVar(&plugin.Name, "name", "", "Name of a plugin.")
+	registerCmd.Flags().StringVar(&plugin.Description, "description", "", "Description of a plugin.")
+	registerCmd.Flags().StringVar(&plugin.PluginImportPath, "import", "", "Import path of plugin.")
+	registerCmd.Flags().StringVar(&outputDir, "output-dir", "plugin", "Output directory to write plugin.go file.")
+	registerCmd.Flags().StringSliceVar(&plugin.CmdParts, "cmd", []string{}, "Defines command parts to execute plugin from kn. "+
+		"E.g `kn service log` can be achieved with `--cmd service,log`.")
 
-    return registerCmd
+	return registerCmd
 }
 
 var pluginTemplate = `
