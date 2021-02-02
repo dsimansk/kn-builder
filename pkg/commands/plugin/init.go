@@ -58,7 +58,7 @@ import (
     "errors"
 	"os"
 
-	{{if .ImportPath}}"{{.ImportPath}}"{{else}}//TODO: add plugin import{{end}}
+	{{if .PluginImportPath}}"{{.PluginImportPath}}"{{else}}//TODO: add plugin import{{end}}
 
 	"knative.dev/client/pkg/kn/plugin"
 )
