@@ -25,6 +25,7 @@ func NewPluginInitCmd() *cobra.Command {
 			if _, err := os.Stat(outputFile); err == nil {
 				return fmt.Errorf("File '%s' already exists\n", outputFile)
 			}
+			fmt.Println("Generating plugin inline file:")
 			f, err := os.Create(outputFile)
 			if err != nil {
 				return err
@@ -37,6 +38,7 @@ func NewPluginInitCmd() *cobra.Command {
 			if err != nil {
 				return err
 			}
+			fmt.Println("✔  plugin inline file generated " + outputFile)
 			err = f.Close()
 			return err
 		},
@@ -58,7 +60,7 @@ import (
     "errors"
 	"os"
 
-	{{if .PluginImportPath}}"{{.PluginImportPath}}"{{else}}//TODO: add plugin import{{end}}
+	{{if .PluginImportPath}}"{{.PluginImportPath	}}"{{else}}//TODO: add plugin import{{end}}
 
 	"knative.dev/client/pkg/kn/plugin"
 )

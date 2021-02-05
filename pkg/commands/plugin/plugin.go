@@ -21,7 +21,6 @@ func NewPluginCmd() *cobra.Command {
 		Short: "Manage kn plugins.",
 	}
 	pluginCmd.AddCommand(NewPluginInitCmd())
-	pluginCmd.AddCommand(NewPluginRegisterCmd())
 	pluginCmd.AddCommand(NewDistroGenerateCmd())
 	return pluginCmd
 }
